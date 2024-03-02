@@ -1,0 +1,30 @@
+name: bank-transfer-service
+
+services:
+  bank-transfer-service:
+    image: hendirepo/bank-transfer-service:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bank-transfer-service
+    depends_on:
+      - pgdb
+    ports:
+      - 3333:3333
+    restart: always
+    env_file:
+      - app.env
+
+  pgdb:
+    image: postgres:latest
+    container_name: pgdb
+    ports:
+      - 5433:5432
+    env_file:
+      - db.env
+    volumes:
+      - pgdb-volume:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdb-volume:
