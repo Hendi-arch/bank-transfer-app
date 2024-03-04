@@ -8,11 +8,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "username" }))
 public class UserSchema {
 
     @Id
@@ -55,5 +58,21 @@ public class UserSchema {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public UserSchema(UserAccountModel userAccountModel) {
+        this.username = userAccountModel.getUsername();
+        this.password = userAccountModel.getPassword();
+        this.balance = userAccountModel.getBalance();
+    }
+
+    public UserAccountModel toUserAccountModel() {
+        UserAccountModel userAccountModel = new UserAccountModel(this.username, this.password, this.balance);
+        userAccountModel.setId(this.id);
+        userAccountModel.setCreatedAt(this.createdAt);
+        userAccountModel.setUpdatedAt(this.updatedAt);
+        userAccountModel.setCreatedBy(this.createdBy);
+        userAccountModel.setUpdatedBy(this.updatedBy);
+        return userAccountModel;
+    }
 
 }

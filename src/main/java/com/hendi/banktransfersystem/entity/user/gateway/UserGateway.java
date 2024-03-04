@@ -5,13 +5,8 @@ import java.util.List;
 
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
-import com.hendi.banktransfersystem.entity.user.model.UserModel;
 
 public interface UserGateway {
-
-    UserModel login(UserModel userModel) throws UserNotFoundException;
-
-    UserModel logout();
 
     UserAccountModel create(UserAccountModel userAccountModel);
 
@@ -20,6 +15,8 @@ public interface UserGateway {
     void delete(Long id) throws UserNotFoundException;
 
     Optional<UserAccountModel> findById(Long id) throws UserNotFoundException;
+
+    Optional<UserAccountModel> findByUsername(String username) throws UserNotFoundException;
 
     List<UserAccountModel> findAll();
 

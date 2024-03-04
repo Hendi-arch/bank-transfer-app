@@ -15,17 +15,9 @@ public class UserAccountModel extends UserModel {
     public UserAccountModel(
             String username,
             String password,
-            BigDecimal balance,
-            String createdBy,
-            String updatedBy,
-            LocalDateTime createdAt,
-            LocalDateTime updatedAt) {
+            BigDecimal balance) {
         super(username, password);
         this.balance = balance;
-        this.createdBy = createdBy;
-        this.updatedBy = updatedBy;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     private BigDecimal balance;

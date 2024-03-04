@@ -4,20 +4,29 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.hendi.banktransfersystem.entity.AbstractEntity;
-import com.hendi.banktransfersystem.entity.user.model.UserModel;
+import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class TransactionModel extends AbstractEntity<Long> {
 
-    private UserModel sender;
+    public TransactionModel(
+            UserAccountModel sender,
+            UserAccountModel receiver,
+            BigDecimal amount,
+            LocalDateTime timestamp) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.amount = amount;
+        this.timestamp = timestamp;
+    }
 
-    private UserModel receiver;
+    private UserAccountModel sender;
+
+    private UserAccountModel receiver;
 
     private BigDecimal amount;
 

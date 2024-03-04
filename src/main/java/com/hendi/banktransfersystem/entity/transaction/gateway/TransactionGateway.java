@@ -12,6 +12,6 @@ public interface TransactionGateway {
             throws InvalidTransactionAmountException, InsufficientBalanceException,
             TransactionNotFoundException, UnauthorizedTransactionException;
 
-    TransactionModel getTransactionById(long transactionId) throws TransactionNotFoundException;
+    TransactionModel getTransactionById(Long id) throws TransactionNotFoundException;
 
 }
