@@ -1,5 +1,6 @@
 package com.hendi.banktransfersystem.usecase.transaction;
 
+import com.hendi.banktransfersystem.entity.transaction.exception.TransactionNotFoundException;
 import com.hendi.banktransfersystem.entity.transaction.gateway.TransactionGateway;
 import com.hendi.banktransfersystem.entity.transaction.model.TransactionModel;
 
@@ -11,8 +12,8 @@ public class GetTransactionUseCase {
         this.transactionGateway = transactionGateway;
     }
 
-    public TransactionModel execute(Long id) {
-        return transactionGateway.getTransactionById(id);
+    public TransactionModel execute(Long id) throws TransactionNotFoundException {
+        return transactionGateway.findById(id).orElseThrow(TransactionNotFoundException::new);
     }
 
 }

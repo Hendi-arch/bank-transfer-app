@@ -1,6 +1,7 @@
 package com.hendi.banktransfersystem.entity.user.gateway;
 
 import java.util.Optional;
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
@@ -19,5 +20,7 @@ public interface UserGateway {
     Optional<UserAccountModel> findByUsername(String username);
 
     List<UserAccountModel> findAll();
+
+    boolean hasSufficientBalanceForTransaction(Long senderId, BigDecimal transactionAmount);
 
 }

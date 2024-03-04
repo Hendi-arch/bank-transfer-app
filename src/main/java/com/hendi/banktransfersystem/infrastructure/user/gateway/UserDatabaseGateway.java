@@ -1,5 +1,6 @@
 package com.hendi.banktransfersystem.infrastructure.user.gateway;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,11 @@ public class UserDatabaseGateway implements UserGateway {
     @Override
     public List<UserAccountModel> findAll() {
         return repository.findAll().stream().map(UserSchema::toUserAccountModel).toList();
+    }
+
+    @Override
+    public boolean hasSufficientBalanceForTransaction(Long senderId, BigDecimal transactionAmount) {
+        return repository.hasSufficientBalanceForTransaction(senderId, transactionAmount);
     }
 
 }

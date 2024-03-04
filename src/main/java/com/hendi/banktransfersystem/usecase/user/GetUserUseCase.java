@@ -1,5 +1,8 @@
 package com.hendi.banktransfersystem.usecase.user;
 
+import java.math.BigDecimal;
+
+import com.hendi.banktransfersystem.entity.transaction.exception.InsufficientBalanceException;
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
 import com.hendi.banktransfersystem.entity.user.gateway.UserGateway;
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
@@ -22,6 +25,13 @@ public class GetUserUseCase {
         return userGateway
                 .findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public void verifySufficientBalanceForTransaction(Long senderId, BigDecimal transactionAmount)
+            throws InsufficientBalanceException {
+        if (!userGateway.hasSufficientBalanceForTransaction(senderId, transactionAmount)) {
+            throw new InsufficientBalanceException();
+        }
     }
 
 }

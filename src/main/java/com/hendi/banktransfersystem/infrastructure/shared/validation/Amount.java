@@ -1,4 +1,4 @@
-package com.hendi.banktransfersystem.infrastructure.user.validation;
+package com.hendi.banktransfersystem.infrastructure.shared.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,12 +8,12 @@ import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 
-@Constraint(validatedBy = BalanceValidator.class)
+@Constraint(validatedBy = AmountValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Balance {
+public @interface Amount {
 
-    String message() default "Balance must be non-negative.";
+    String message() default "Amount must be non-negative.";
 
     Class<?>[] groups() default {};
 
