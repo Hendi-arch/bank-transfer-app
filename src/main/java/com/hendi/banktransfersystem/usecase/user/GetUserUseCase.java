@@ -12,13 +12,13 @@ public class GetUserUseCase {
         this.userGateway = userGateway;
     }
 
-    public UserAccountModel findById(Long id) {
+    public UserAccountModel findById(Long id) throws UserNotFoundException {
         return userGateway
                 .findById(id)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public UserAccountModel findByUsername(String username) {
+    public UserAccountModel findByUsername(String username) throws UserNotFoundException {
         return userGateway
                 .findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);

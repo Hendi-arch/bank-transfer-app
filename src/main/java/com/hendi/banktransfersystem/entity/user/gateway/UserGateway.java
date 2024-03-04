@@ -10,13 +10,13 @@ public interface UserGateway {
 
     UserAccountModel create(UserAccountModel userAccountModel);
 
-    UserAccountModel update(UserAccountModel userAccountModel) throws UserNotFoundException;
+    UserAccountModel update(UserAccountModel userAccountModel);
 
     void delete(Long id) throws UserNotFoundException;
 
-    Optional<UserAccountModel> findById(Long id) throws UserNotFoundException;
+    Optional<UserAccountModel> findById(Long id);
 
-    Optional<UserAccountModel> findByUsername(String username) throws UserNotFoundException;
+    Optional<UserAccountModel> findByUsername(String username);
 
     List<UserAccountModel> findAll();
 
