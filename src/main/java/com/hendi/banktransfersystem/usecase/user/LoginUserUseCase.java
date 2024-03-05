@@ -35,7 +35,7 @@ public class LoginUserUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserAccountModel execute(IUserLoginData data) {
+    public UserAccountModel execute(IUserLoginData data) throws PasswordNotMatchException {
         String username = data.username();
         String password = data.password();
 

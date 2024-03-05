@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenNotFoundException;
 import com.hendi.banktransfersystem.entity.usertoken.model.UserTokenModel;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 import com.hendi.banktransfersystem.infrastructure.usertoken.dto.UserTokenCreateData;
@@ -39,7 +40,7 @@ public class UserTokenController {
     }
 
     @GetMapping("/{authToken}")
-    public ResponseEntity<WebHttpResponse<UserTokenPublicData>> getUserToken(@PathVariable String authToken) {
+    public ResponseEntity<WebHttpResponse<UserTokenPublicData>> getUserToken(@PathVariable String authToken) throws UserTokenNotFoundException {
         UserTokenModel userTokenData = getUserTokenUseCase.execute(authToken);
         return new ResponseEntity<>(WebHttpResponse.ok(new UserTokenPublicData(userTokenData)), HttpStatus.OK);
     }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import com.hendi.banktransfersystem.entity.user.exception.PasswordNotMatchException;
+import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 import com.hendi.banktransfersystem.infrastructure.user.dto.UserCreateData;
@@ -51,7 +53,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<WebHttpResponse<UserPublicData>> loginUser(@Valid @RequestBody UserLoginData request) {
+    public ResponseEntity<WebHttpResponse<UserPublicData>> loginUser(@Valid @RequestBody UserLoginData request)
+            throws PasswordNotMatchException {
         UserAccountModel userAccountData = loginUserUseCase.execute(request);
         return new ResponseEntity<>(WebHttpResponse.ok(new UserPublicData(userAccountData)), HttpStatus.OK);
     }
@@ -71,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WebHttpResponse<UserPublicData>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<WebHttpResponse<UserPublicData>> getUserById(@PathVariable Long id) throws UserNotFoundException {
         UserAccountModel userAccountData = getUserUseCase.findById(id);
         return new ResponseEntity<>(WebHttpResponse.ok(new UserPublicData(userAccountData)), HttpStatus.OK);
     }
