@@ -53,7 +53,7 @@ The application exposes the following API endpoints:
 - **POST** `/transactions/{senderId}/transfer`: Endpoint for creating transactions.
 - **GET** `/transactions/{id}`: Endpoint for searching transactions.
 
-For detailed information on each endpoint, refer to the [API documentation.](https://swagger.io/)
+For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.0.0)
 
 ## Configuration
 
