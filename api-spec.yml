@@ -1,0 +1,423 @@
+openapi: 3.0.0
+info:
+  title: Bank Transfer Application API
+  version: 1.0.0
+  description: API documentation for Bank Transfer Application
+  contact:
+    name: Hendi
+    email: hendinofiansyah11@gmail.com
+servers:
+  - url: http://localhost:3333
+paths:
+  /users/login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginData"
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublicData"
+              example:
+                id: 1
+                username: user123
+                balance: 1000
+                createdAt: "2022-02-28T08:00:00Z"
+                updatedAt: "2022-02-28T08:00:00Z"
+        "400":
+          description: Bad request
+
+  /users/user:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateData"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublicData"
+              example:
+                id: 2
+                username: newuser
+                balance: 500
+                createdAt: "2022-02-28T08:05:00Z"
+                updatedAt: "2022-02-28T08:05:00Z"
+        "400":
+          description: Bad request
+
+  /users/all:
+    get:
+      summary: Get all users
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserPublicData"
+              example:
+                - id: 1
+                  username: user123
+                  balance: 1000
+                  createdAt: "2022-02-28T08:00:00Z"
+                  updatedAt: "2022-02-28T08:00:00Z"
+                - id: 2
+                  username: newuser
+                  balance: 500
+                  createdAt: "2022-02-28T08:05:00Z"
+                  updatedAt: "2022-02-28T08:05:00Z"
+      security:
+        - BearerAuth: []
+
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublicData"
+              example:
+                id: 1
+                username: user123
+                balance: 1000
+                createdAt: "2022-02-28T08:00:00Z"
+                updatedAt: "2022-02-28T08:00:00Z"
+        "404":
+          description: User not found
+      security:
+        - BearerAuth: []
+    put:
+      summary: Update user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateData"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublicData"
+              example:
+                id: 1
+                username: user123
+                balance: 1500
+                createdAt: "2022-02-28T08:00:00Z"
+                updatedAt: "2022-02-28T08:10:00Z"
+        "400":
+          description: Bad request
+      security:
+        - BearerAuth: []
+
+  /transactions/{id}:
+    get:
+      summary: Get Transaction by ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the transaction to retrieve
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionPublicData"
+              example:
+                id: 123
+                sender:
+                  id: 1
+                  username: user123
+                  balance: 1000
+                  createdAt: "2022-02-28T08:00:00Z"
+                  updatedAt: "2022-02-28T08:00:00Z"
+                receiver:
+                  id: 2
+                  username: newuser
+                  balance: 500
+                  createdAt: "2022-02-28T08:05:00Z"
+                  updatedAt: "2022-02-28T08:05:00Z"
+                amount: 200
+                timestamp: "2022-02-28T08:15:00Z"
+        "404":
+          description: Transaction not found
+      security:
+        - BearerAuth: []
+
+  /transactions/{senderId}/transfer:
+    post:
+      summary: Initiate Fund Transfer
+      parameters:
+        - name: senderId
+          in: path
+          description: ID of the sender initiating the transfer
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionTransferData"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionPublicData"
+              example:
+                id: 124
+                sender:
+                  id: 1
+                  username: user123
+                  balance: 800
+                  createdAt: "2022-02-28T08:00:00Z"
+                  updatedAt: "2022-02-28T08:00:00Z"
+                receiver:
+                  id: 2
+                  username: newuser
+                  balance: 700
+                  createdAt: "2022-02-28T08:05:00Z"
+                  updatedAt: "2022-02-28T08:05:00Z"
+                amount: 300
+                timestamp: "2022-02-28T08:20:00Z"
+        "400":
+          description: Bad request
+        "404":
+          description: Sender not found or insufficient balance
+      security:
+        - BearerAuth: []
+
+  /usertokens/{authToken}:
+    get:
+      summary: Get User Token by Auth Token
+      parameters:
+        - name: authToken
+          in: path
+          description: Authentication token of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserTokenPublicData"
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                expiryDateTime: "2022-03-01T00:00:00Z"
+        "404":
+          description: User Token not found
+      security:
+        - BearerAuth: []
+    delete:
+      summary: Delete User Token by Auth Token
+      parameters:
+        - name: authToken
+          in: path
+          description: Authentication token of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Success
+      security:
+        - BearerAuth: []
+
+  /usertokens/usertoken:
+    post:
+      summary: Create User Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserTokenCreateData"
+      responses:
+        "201":
+          description: User Token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserTokenPublicData"
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                expiryDateTime: "2022-03-01T00:00:00Z"
+        "400":
+          description: Bad request
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserLoginData:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: User's username
+        password:
+          type: string
+          description: User's password
+    UserCreateData:
+      type: object
+      required:
+        - username
+        - password
+        - balance
+      properties:
+        username:
+          type: string
+          description: User's username
+        password:
+          type: string
+          description: User's password
+        balance:
+          type: number
+          format: double
+          description: User's balance
+    UserUpdateData:
+      type: object
+      required:
+        - username
+        - password
+        - balance
+      properties:
+        username:
+          type: string
+          description: User's username
+        password:
+          type: string
+          description: User's password
+        balance:
+          type: number
+          format: double
+          description: User's balance
+    UserPublicData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: User ID
+        username:
+          type: string
+          description: User's username
+        balance:
+          type: number
+          format: double
+          description: User's balance
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time of user creation
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time of last user update
+    TransactionPublicData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Transaction ID
+        sender:
+          $ref: "#/components/schemas/UserPublicData"
+        receiver:
+          $ref: "#/components/schemas/UserPublicData"
+        amount:
+          type: number
+          format: double
+          description: Transaction amount
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the transaction
+    TransactionTransferData:
+      type: object
+      properties:
+        receiver:
+          type: integer
+          description: ID of the transaction receiver
+        amount:
+          type: number
+          format: double
+          description: Transaction amount
+    UserTokenPublicData:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Authentication token of the user
+        expiryDateTime:
+          type: string
+          format: date-time
+          description: Expiry date and time of the token
+    UserTokenCreateData:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/UserAccountModel"
+        token:
+          type: string
+          description: Authentication token of the user
+        expiryDateTime:
+          type: string
+          format: date-time
+          description: Expiry date and time of the token

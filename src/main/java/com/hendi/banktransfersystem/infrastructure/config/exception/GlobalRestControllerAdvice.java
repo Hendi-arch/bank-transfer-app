@@ -46,9 +46,10 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 	 * @return ResponseEntity containing the error response
 	 */
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<WebHttpResponse<String>> handleGenericException(Exception ex) {
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleGenericException(Exception ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(WebHttpResponse.internalServerError(ex.getMessage()));
+				.body(WebHttpResponse.internalServerError(messages));
 	}
 
 	/**
@@ -58,8 +59,10 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 	 * @return ResponseEntity containing the error response
 	 */
 	@ExceptionHandler(PersistenceException.class)
-	public ResponseEntity<WebHttpResponse<String>> handlePersistenceException(PersistenceException ex) {
-		return ResponseEntity.badRequest().body(WebHttpResponse.internalServerError(ex.getMessage()));
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handlePersistenceException(
+			PersistenceException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.internalServerError().body(WebHttpResponse.internalServerError(messages));
 	}
 
 	/**
@@ -70,9 +73,10 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 	 * @return ResponseEntity containing the error response
 	 */
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<WebHttpResponse<String>> handleDataIntegrityViolationException(
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleDataIntegrityViolationException(
 			DataIntegrityViolationException ex) {
-		return ResponseEntity.badRequest().body(WebHttpResponse.internalServerError(ex.getMessage()));
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.internalServerError().body(WebHttpResponse.internalServerError(messages));
 	}
 
 	/**
@@ -83,8 +87,9 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 	 * @return ResponseEntity containing the error response
 	 */
 	@ExceptionHandler(InvalidDataAccessApiUsageException.class)
-	public ResponseEntity<WebHttpResponse<String>> handleInvalidDataAccessApiUsageException(
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleInvalidDataAccessApiUsageException(
 			InvalidDataAccessApiUsageException ex) {
-		return ResponseEntity.badRequest().body(WebHttpResponse.internalServerError(ex.getMessage()));
+		List<WebHttpErrorResponse> message = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.internalServerError().body(WebHttpResponse.internalServerError(message));
 	}
 }
