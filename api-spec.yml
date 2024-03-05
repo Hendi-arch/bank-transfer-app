@@ -364,6 +364,13 @@ components:
           type: number
           format: double
           description: User's balance
+        jwtToken:
+          type: string
+          description: Authentication token of the user
+        jwtExpiryDateTime:
+          type: string
+          format: date-time
+          description: Expiry date and time of the token
         createdAt:
           type: string
           format: date-time
