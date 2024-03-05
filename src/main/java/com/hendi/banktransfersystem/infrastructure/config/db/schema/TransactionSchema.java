@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.hendi.banktransfersystem.entity.transaction.model.TransactionModel;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -63,5 +65,26 @@ public class TransactionSchema {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public TransactionSchema(TransactionModel transactionModel) {
+        this.sender = new UserSchema(transactionModel.getSender());
+        this.receiver = new UserSchema(transactionModel.getReceiver());
+        this.amount = transactionModel.getAmount();
+        this.timestamp = transactionModel.getTimestamp();
+    }
+
+    public TransactionModel toTransactionModel() {
+        TransactionModel transactionModel = new TransactionModel(
+                this.sender.toUserAccountModel(),
+                this.receiver.toUserAccountModel(),
+                this.amount,
+                this.timestamp);
+        transactionModel.setId(this.id);
+        transactionModel.setCreatedAt(this.createdAt);
+        transactionModel.setUpdatedAt(this.updatedAt);
+        transactionModel.setCreatedBy(this.createdBy);
+        transactionModel.setUpdatedBy(this.updatedBy);
+        return transactionModel;
+    }
 
 }

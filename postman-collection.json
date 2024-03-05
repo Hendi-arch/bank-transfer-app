@@ -1,0 +1,346 @@
+{
+    "info": {
+        "_postman_id": "73b8db3f-902b-41d7-a99f-27964b6d8572",
+        "name": "Bank Transfer Application",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "User Login",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\"\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/users/login",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "users",
+                        "login"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Sample Response",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/users/login",
+                            "protocol": "http",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "login"
+                            ]
+                        }
+                    },
+                    "status": "200 OK",
+                    "code": 200,
+                    "header": [],
+                    "body": "{\"id\":1,\"username\":\"user123\",\"balance\":1000,\"createdAt\":\"2022-02-28T08:00:00Z\",\"updatedAt\":\"2022-02-28T08:00:00Z\",\"jwtToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InVzZXIxMjMiLCJpYXQiOjE2NDEyNzIyNzUsImV4cCI6MTY0MTI3MjI4MH0.YeA6n_8xPJ8aa-YTij-wCflnbm0hnEXKWuP2p4M5SXI\",\"jwtExpiryDateTime\":\"2024-02-28T08:00:00Z\"}"
+                }
+            ]
+        },
+        {
+            "name": "Create User",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"balance\": 0\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/users/user",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "users",
+                        "user"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Sample Response",
+                    "originalRequest": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"balance\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/users/user",
+                            "protocol": "http",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "user"
+                            ]
+                        }
+                    },
+                    "status": "201 Created",
+                    "code": 201,
+                    "header": [],
+                    "body": "{\n  \"id\": 2,\n  \"username\": \"newuser\",\n  \"balance\": 500,\n  \"createdAt\": \"2022-02-28T08:05:00Z\",\n  \"updatedAt\": \"2022-02-28T08:05:00Z\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "Get All Users",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/users/all",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "users",
+                        "all"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Sample Response",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/users/all",
+                            "protocol": "http",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "all"
+                            ]
+                        }
+                    },
+                    "status": "200 OK",
+                    "code": 200,
+                    "header": [],
+                    "body": "[\n  {\n    \"id\": 1,\n    \"username\": \"user123\",\n    \"balance\": 1000,\n    \"createdAt\": \"2022-02-28T08:00:00Z\",\n    \"updatedAt\": \"2022-02-28T08:00:00Z\"\n  },\n  {\n    \"id\": 2,\n    \"username\": \"newuser\",\n    \"balance\": 500,\n    \"createdAt\": \"2022-02-28T08:05:00Z\",\n    \"updatedAt\": \"2022-02-28T08:05:00Z\"\n  }\n]"
+                }
+            ]
+        },
+        {
+            "name": "Get User by ID",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/users/{id}",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "users",
+                        "{id}"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update User",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"balance\": 0\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/users/{id}",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "users",
+                        "{id}"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Transaction by ID",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {},
+                "url": {
+                    "raw": "{{baseUrl}}/transactions/123",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "transactions",
+                        "123"
+                    ]
+                }
+            },
+            "response": [
+                {
+                    "name": "Sample Response",
+                    "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {},
+                        "url": {
+                            "raw": "{{baseUrl}}/transactions/123",
+                            "protocol": "http",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "transactions",
+                                "123"
+                            ]
+                        }
+                    },
+                    "status": "200 OK",
+                    "code": 200,
+                    "header": [],
+                    "body": "{\n  \"id\": 123,\n  \"sender\": {\n    \"id\": 1,\n    \"username\": \"user123\",\n    \"balance\": 1000,\n    \"createdAt\": \"2022-02-28T08:00:00Z\",\n    \"updatedAt\": \"2022-02-28T08:00:00Z\"\n  },\n  \"receiver\": {\n    \"id\": 2,\n    \"username\": \"newuser\",\n    \"balance\": 500,\n    \"createdAt\": \"2022-02-28T08:05:00Z\",\n    \"updatedAt\": \"2022-02-28T08:05:00Z\"\n  },\n  \"amount\": 200,\n  \"timestamp\": \"2022-02-28T08:15:00Z\"\n}"
+                }
+            ]
+        },
+        {
+            "name": "Initiate Fund Transfer",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"receiver\": 456,\n    \"amount\": 1000\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/transactions/789/transfer",
+                    "protocol": "http",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "transactions",
+                        "789",
+                        "transfer"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get User Token by Auth Token",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": "{{baseUrl}}/usertokens/{{authToken}}"
+            },
+            "response": []
+        },
+        {
+            "name": "Delete User Token by Auth Token",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": "{{baseUrl}}/usertokens/{{authToken}}"
+            },
+            "response": []
+        },
+        {
+            "name": "Create User Token",
+            "request": {
+                "method": "POST",
+                "url": "{{baseUrl}}/usertokens/usertoken",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"user\": {\n        \"username\": \"string\",\n        \"password\": \"string\",\n        \"balance\": 0\n    },\n    \"token\": \"string\",\n    \"expiryDateTime\": \"2022-03-01T00:00:00Z\"\n}"
+                }
+            },
+            "response": []
+        }
+    ],
+    "protocolProfileBehavior": {}
+}

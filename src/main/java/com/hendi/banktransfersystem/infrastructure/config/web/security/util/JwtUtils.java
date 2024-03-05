@@ -1,11 +1,15 @@
 package com.hendi.banktransfersystem.infrastructure.config.web.security.util;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.KeyPair;
+import java.util.Date;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
@@ -21,12 +25,20 @@ public class JwtUtils {
         this.rsaKeyPair = rsaKeyPair;
     }
 
-    public String getUserNameFromJwtToken(String token) {
+    private Claims getClaims(String authToken) {
         return Jwts.parser()
                 .verifyWith(rsaKeyPair.getPublic())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload().getSubject();
+                .parseSignedClaims(authToken)
+                .getPayload();
+    }
+
+    public String getUserNameFromJwtToken(String authToken) {
+        return getClaims(authToken).getSubject();
+    }
+
+    public Date getExpirationFromJwtToken(String authToken) {
+        return getClaims(authToken).getExpiration();
     }
 
     public boolean validateJwtToken(String authToken) {
@@ -47,4 +59,14 @@ public class JwtUtils {
 
         return false;
     }
+
+    public String generateJwtToken(UserDetails subject) {
+        return Jwts.builder()
+                .subject(subject.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))
+                .signWith(rsaKeyPair.getPrivate(), SIG.RS256)
+                .compact();
+    }
+
 }
