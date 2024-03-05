@@ -43,14 +43,17 @@ public class MvcConfiguration {
 
     @Bean
     public LoginUserUseCase loginUserUseCase(
-            GetUserUseCase getUserUseCase,
-            CreateUserTokenUseCase createUserTokenUseCase,
+            UserRepository userRepository,
+            UserTokenRepository userTokenRepository,
             JwtUtils jwtUtils,
             MyUserDetailService myUserDetailService,
             PasswordEncoder passwordEncoder) {
+        UserGateway userGateway = new UserDatabaseGateway(userRepository);
+        UserTokenGateway userTokenGateway = new UserTokenDatabaseGateway(userTokenRepository);
+
         return new LoginUserUseCase(
-                getUserUseCase,
-                createUserTokenUseCase,
+                userGateway,
+                userTokenGateway,
                 jwtUtils,
                 myUserDetailService,
                 passwordEncoder);
@@ -63,12 +66,9 @@ public class MvcConfiguration {
     }
 
     @Bean
-    public UpdateUserUseCase updateUserUseCase(
-            UserRepository userRepository,
-            GetUserUseCase getUserUseCase,
-            PasswordEncoder passwordEncoder) {
+    public UpdateUserUseCase updateUserUseCase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         UserGateway userGateway = new UserDatabaseGateway(userRepository);
-        return new UpdateUserUseCase(userGateway, getUserUseCase, passwordEncoder);
+        return new UpdateUserUseCase(userGateway, passwordEncoder);
     }
 
     @Bean
@@ -96,10 +96,12 @@ public class MvcConfiguration {
     }
 
     @Bean
-    public TransactionTransferUseCase transactionTransferUseCase(TransactionRepository transactionRepository,
-            GetUserUseCase getUserUseCase) {
+    public TransactionTransferUseCase transactionTransferUseCase(
+            TransactionRepository transactionRepository,
+            UserRepository userRepository) {
         TransactionGateway transactionGateway = new TransactionDatabaseGateway(transactionRepository);
-        return new TransactionTransferUseCase(transactionGateway, getUserUseCase);
+        UserGateway userGateway = new UserDatabaseGateway(userRepository);
+        return new TransactionTransferUseCase(transactionGateway, userGateway);
     }
 
 }
