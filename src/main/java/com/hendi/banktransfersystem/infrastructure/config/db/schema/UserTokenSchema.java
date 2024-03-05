@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_tokens", uniqueConstraints = @UniqueConstraint(columnNames = { "token" }))
+@Table(name = "user_tokens", uniqueConstraints = @UniqueConstraint(name = "user_tokens", columnNames = { "token" }))
 public class UserTokenSchema {
 
     @Id

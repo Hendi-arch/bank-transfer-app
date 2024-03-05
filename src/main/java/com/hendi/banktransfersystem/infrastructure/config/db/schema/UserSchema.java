@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "username" }))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "users", columnNames = { "username" }))
 public class UserSchema {
 
     @Id
