@@ -50,10 +50,13 @@ public class LoginUserUseCase {
 
         UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
         String jwtToken = jwtUtils.generateJwtToken(userDetails);
-        LocalDateTime expiryDateTime = jwtUtils.getExpirationFromJwtToken(jwtToken).toInstant()
+        LocalDateTime jwtExpiryDateTime = jwtUtils.getExpirationFromJwtToken(jwtToken).toInstant()
                 .atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        UserTokenModel userTokenData = new UserTokenModel(userAccountData, jwtToken, expiryDateTime);
+        userAccountData.setJwtToken(jwtToken);
+        userAccountData.setJwtExpiryDateTime(jwtExpiryDateTime);
+
+        UserTokenModel userTokenData = new UserTokenModel(userAccountData, jwtToken, jwtExpiryDateTime);
         userTokenGateway.create(userTokenData);
         return userAccountData;
     }

@@ -31,6 +31,8 @@ paths:
                 balance: 1000
                 createdAt: "2022-02-28T08:00:00Z"
                 updatedAt: "2022-02-28T08:00:00Z"
+                jwtToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InVzZXIxMjMiLCJpYXQiOjE2NDEyNzIyNzUsImV4cCI6MTY0MTI3MjI4MH0.YeA6n_8xPJ8aa-YTij-wCflnbm0hnEXKWuP2p4M5SXI"
+                jwtExpiryDateTime: "2024-02-28T08:00:00Z"
         "400":
           description: Bad request
 

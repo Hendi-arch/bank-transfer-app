@@ -10,7 +10,6 @@ import lombok.Data;
 public class WebHttpResponse<T> {
     private Integer status;
     private String message;
-    private String auth;
     private T data;
 
     public static <T> WebHttpResponse<T> ok(T data) {
@@ -33,15 +32,6 @@ public class WebHttpResponse<T> {
         WebHttpResponse<T> response = new WebHttpResponse<>();
         response.setStatus(status);
         response.setMessage(message);
-        response.setData(data);
-        return response;
-    }
-
-    public static <T> WebHttpResponse<T> of(Integer status, String message, String auth, T data) {
-        WebHttpResponse<T> response = new WebHttpResponse<>();
-        response.setStatus(status);
-        response.setMessage(message);
-        response.setAuth(auth);
         response.setData(data);
         return response;
     }
