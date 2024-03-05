@@ -1,7 +1,5 @@
 package com.hendi.banktransfersystem.infrastructure.config.web.response;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -12,7 +10,6 @@ import lombok.Data;
 public class WebHttpResponse<T> {
     private Integer status;
     private String message;
-    private List<WebHttpErrorResponse> errors;
     private String auth;
     private T data;
 
@@ -22,6 +19,14 @@ public class WebHttpResponse<T> {
 
     public static <T> WebHttpResponse<T> created(T data) {
         return of(201, "Created", data);
+    }
+
+    public static <T> WebHttpResponse<T> badRequest(T data) {
+        return of(400, "Bad Request", data);
+    }
+
+    public static <T> WebHttpResponse<T> internalServerError(T data) {
+        return of(500, "Internal Server Error", data);
     }
 
     public static <T> WebHttpResponse<T> of(Integer status, String message, T data) {
@@ -38,14 +43,6 @@ public class WebHttpResponse<T> {
         response.setMessage(message);
         response.setAuth(auth);
         response.setData(data);
-        return response;
-    }
-
-    public static <T> WebHttpResponse<T> of(Integer status, String message, List<WebHttpErrorResponse> errors) {
-        WebHttpResponse<T> response = new WebHttpResponse<>();
-        response.setStatus(status);
-        response.setMessage(message);
-        response.setErrors(errors);
         return response;
     }
 }
