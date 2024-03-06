@@ -44,7 +44,7 @@ public class LoginUserUseCase {
         UserAccountModel userAccountData = userGateway.findByUsername(username).orElseThrow(UserNotFoundException::new);
 
         boolean isPasswordMatch = passwordEncoder.matches(password, userAccountData.getPassword());
-        if (isPasswordMatch) {
+        if (!isPasswordMatch) {
             throw new PasswordNotMatchException();
         }
 

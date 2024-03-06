@@ -42,7 +42,7 @@ public class TransactionController {
     }
 
     @PostMapping("/{senderId}/transfer")
-    public ResponseEntity<WebHttpResponse<TransactionPublicData>> transfer(@PathVariable Long senderId,
+    public synchronized ResponseEntity<WebHttpResponse<TransactionPublicData>> transfer(@PathVariable Long senderId,
             @Valid @RequestBody TransactionTransferData request)
             throws UserNotFoundException, InsufficientBalanceException {
         TransactionModel transactionData = transactionTransferUseCase.execute(senderId, request);

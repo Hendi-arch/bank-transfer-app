@@ -30,9 +30,9 @@ import com.hendi.banktransfersystem.usecase.usertoken.GetUserTokenUseCase;
 public class MvcConfiguration {
 
     @Bean
-    public CreateUserUseCase createUserUseCase(UserRepository userRepository) {
+    public CreateUserUseCase createUserUseCase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         UserGateway userGateway = new UserDatabaseGateway(userRepository);
-        return new CreateUserUseCase(userGateway);
+        return new CreateUserUseCase(userGateway, passwordEncoder);
     }
 
     @Bean

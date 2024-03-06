@@ -24,6 +24,10 @@ public class WebHttpResponse<T> {
         return of(400, "Bad Request", data);
     }
 
+    public static <T> WebHttpResponse<T> notFound(T data) {
+        return of(404, "Not Found", data);
+    }
+
     public static <T> WebHttpResponse<T> internalServerError(T data) {
         return of(500, "Internal Server Error", data);
     }
