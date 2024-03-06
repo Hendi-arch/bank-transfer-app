@@ -11,6 +11,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.CorsSecurityFilter;
+import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.RevokedJwtTokenFilter;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.SecurityMethodFilter;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.handler.MyAccessDeniedHandler;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.handler.MyAuthenticationHandler;
@@ -26,6 +27,7 @@ public class AppSecurityConfigurer {
 	private final MyUserDetailService myUserDetailService;
 	private final SecurityMethodFilter securityMethodFilter;
 	private final CorsSecurityFilter corsSecurityFilter;
+	private final RevokedJwtTokenFilter revokedJwtTokenFilter;
 	private final MyAuthenticationHandler myAuthenticationHandler;
 	private final MyAccessDeniedHandler myAccessDeniedHandler;
 
@@ -38,11 +40,13 @@ public class AppSecurityConfigurer {
 	public AppSecurityConfigurer(MyUserDetailService myUserDetailService,
 			SecurityMethodFilter securityMethodFilter,
 			CorsSecurityFilter corsSecurityFilter,
+			RevokedJwtTokenFilter revokedJwtTokenFilter,
 			MyAuthenticationHandler myAuthenticationHandler,
 			MyAccessDeniedHandler myAccessDeniedHandler) {
 		this.myUserDetailService = myUserDetailService;
 		this.securityMethodFilter = securityMethodFilter;
 		this.corsSecurityFilter = corsSecurityFilter;
+		this.revokedJwtTokenFilter = revokedJwtTokenFilter;
 		this.myAuthenticationHandler = myAuthenticationHandler;
 		this.myAccessDeniedHandler = myAccessDeniedHandler;
 	}
@@ -73,6 +77,7 @@ public class AppSecurityConfigurer {
 		http.userDetailsService(myUserDetailService);
 		http.addFilterBefore(corsSecurityFilter, ChannelProcessingFilter.class);
 		http.addFilterBefore(securityMethodFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(revokedJwtTokenFilter, SecurityMethodFilter.class);
 
 		return http.build();
 	}

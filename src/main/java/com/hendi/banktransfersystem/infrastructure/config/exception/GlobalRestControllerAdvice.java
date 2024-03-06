@@ -16,6 +16,7 @@ import com.hendi.banktransfersystem.entity.transaction.exception.TransactionNotF
 import com.hendi.banktransfersystem.entity.user.exception.PasswordNotMatchException;
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
 import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenNotFoundException;
+import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenRevokedException;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpErrorResponse;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 
@@ -162,4 +163,19 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 		List<WebHttpErrorResponse> message = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
 		return ResponseEntity.internalServerError().body(WebHttpResponse.internalServerError(message));
 	}
+
+	/**
+	 * Handles when authentication fails, usually due to revoked credentials.
+	 *
+	 * @param ex The UserTokenRevokedException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(UserTokenRevokedException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleUserTokenRevokedException(
+			UserTokenRevokedException ex) {
+		List<WebHttpErrorResponse> message = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(WebHttpResponse.unauthorized(message));
+	}
+
 }
