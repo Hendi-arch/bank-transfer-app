@@ -30,7 +30,8 @@ public class AppSecurityConfigurer {
 	private final MyAccessDeniedHandler myAccessDeniedHandler;
 
 	private static final String[] UNSECURED_ENDPOINTS = {
-			"/sign_in",
+			"/users/login",
+			"/users/user",
 			"/actuator/**"
 	};
 

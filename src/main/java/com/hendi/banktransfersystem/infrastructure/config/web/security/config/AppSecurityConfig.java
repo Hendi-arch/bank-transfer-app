@@ -6,10 +6,18 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class AppSecurityConfig {
+
+	@Bean
+    public AuditorAware<String> auditorProvider() {
+        return new AppSecurityAuditorConfig();
+    }
     
     @Bean
 	public BCryptPasswordEncoder passwordEncoder() {
