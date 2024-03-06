@@ -1,7 +1,6 @@
 package com.hendi.banktransfersystem.usecase.user;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import com.hendi.banktransfersystem.entity.user.gateway.UserGateway;
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
