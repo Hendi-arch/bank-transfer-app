@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.hendi.banktransfersystem.entity.transaction.exception.InsufficientBalanceException;
+import com.hendi.banktransfersystem.entity.transaction.exception.TransactionNotFoundException;
+import com.hendi.banktransfersystem.entity.user.exception.PasswordNotMatchException;
+import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
+import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenNotFoundException;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpErrorResponse;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 
@@ -37,6 +42,71 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.badRequest().body(WebHttpResponse.badRequest(messages));
+	}
+
+	/**
+	 * Handles when the sender's balance is insufficient for a transaction.
+	 *
+	 * @param ex The InsufficientBalanceException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(InsufficientBalanceException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleInsufficientBalanceException(
+			InsufficientBalanceException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse("sender_balance", ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(WebHttpResponse.badRequest(messages));
+	}
+
+	/**
+	 * Handles when a transaction is not found.
+	 *
+	 * @param ex The TransactionNotFoundException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(TransactionNotFoundException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleTransactionNotFoundException(
+			TransactionNotFoundException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(WebHttpResponse.notFound(messages));
+	}
+
+	/**
+	 * Handles when a user is not found.
+	 *
+	 * @param ex The UserNotFoundException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleUserNotFoundException(
+			UserNotFoundException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(WebHttpResponse.notFound(messages));
+	}
+
+	/**
+	 * Handles when a password does not match.
+	 *
+	 * @param ex The PasswordNotMatchException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(PasswordNotMatchException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handlePasswordNotMatchException(
+			PasswordNotMatchException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(WebHttpResponse.badRequest(messages));
+	}
+
+	/**
+	 * Handles when a user token is not found.
+	 *
+	 * @param ex The UserTokenNotFoundException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(UserTokenNotFoundException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleUserTokenNotFoundException(
+			UserTokenNotFoundException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(WebHttpResponse.notFound(messages));
 	}
 
 	/**

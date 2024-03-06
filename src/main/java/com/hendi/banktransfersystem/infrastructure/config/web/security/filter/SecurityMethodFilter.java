@@ -40,16 +40,16 @@ public class SecurityMethodFilter extends OncePerRequestFilter {
 		String jwtToken = parseJwt(request);
 
 		if (StringUtils.hasText(jwtToken) && jwtUtils.validateJwtToken(jwtToken)) {
-			String email = jwtUtils.getUserNameFromJwtToken(jwtToken);
-			setAuthenticationIfNotExists(request, email);
+			String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+			setAuthenticationIfNotExists(request, username);
 		}
 
 		filterChain.doFilter(request, response);
 	}
 
-	private void setAuthenticationIfNotExists(HttpServletRequest request, String email) {
+	private void setAuthenticationIfNotExists(HttpServletRequest request, String username) {
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = myUserDetailService.loadUserByUsername(email);
+			UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
 
 			if (userDetails != null) {
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

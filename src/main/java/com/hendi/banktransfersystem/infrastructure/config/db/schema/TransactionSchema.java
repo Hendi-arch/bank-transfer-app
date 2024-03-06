@@ -7,11 +7,13 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.hendi.banktransfersystem.entity.transaction.model.TransactionModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "transactions")
 public class TransactionSchema {
 
@@ -52,18 +55,23 @@ public class TransactionSchema {
     private BigDecimal amount;
 
     @NotNull
+    @Column(nullable = false)
     private LocalDateTime timestamp;
 
     @CreatedBy
+    @Column(nullable = false)
     private String createdBy;
 
     @LastModifiedBy
+    @Column(nullable = false)
     private String updatedBy;
 
     @CreatedDate
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     public TransactionSchema(TransactionModel transactionModel) {
