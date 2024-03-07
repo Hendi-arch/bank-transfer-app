@@ -7,8 +7,6 @@ import com.hendi.banktransfersystem.entity.usertoken.model.UserTokenModel;
 import com.hendi.banktransfersystem.infrastructure.config.db.repository.UserTokenRepository;
 import com.hendi.banktransfersystem.infrastructure.config.db.schema.UserTokenSchema;
 
-import jakarta.transaction.Transactional;
-
 public class UserTokenDatabaseGateway implements UserTokenGateway {
 
     private final UserTokenRepository repository;
@@ -23,7 +21,6 @@ public class UserTokenDatabaseGateway implements UserTokenGateway {
     }
 
     @Override
-    @Transactional
     public void delete(String authToken) {
         repository.deleteByToken(authToken);
     }
