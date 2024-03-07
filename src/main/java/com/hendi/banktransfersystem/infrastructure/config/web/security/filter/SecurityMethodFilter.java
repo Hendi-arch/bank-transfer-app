@@ -37,7 +37,7 @@ public class SecurityMethodFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain)
 			throws ServletException, IOException {
-		String jwtToken = parseJwt(request);
+		String jwtToken = jwtUtils.parseJwt(request);
 
 		if (StringUtils.hasText(jwtToken) && jwtUtils.validateJwtToken(jwtToken)) {
 			String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
@@ -58,16 +58,6 @@ public class SecurityMethodFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			}
 		}
-	}
-
-	private String parseJwt(HttpServletRequest request) {
-		String headerAuth = request.getHeader("Authorization");
-
-		if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-			return headerAuth.substring(7);
-		}
-
-		return null;
 	}
 
 }
