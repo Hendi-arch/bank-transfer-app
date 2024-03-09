@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
+import com.hendi.banktransfersystem.infrastructure.config.db.schema.UserRoleSchema.RoleEnum;
 import com.hendi.banktransfersystem.usecase.user.GetUserUseCase;
 
 @Service
@@ -25,11 +26,15 @@ public class MyUserDetailService implements UserDetailsService {
 		UserAccountModel userAccount = getUserUseCase.findByUsername(identity);
 		String username = userAccount.getUsername();
 		String password = userAccount.getPassword();
+		RoleEnum role = userAccount.getRole().getRole();
 
-		List<String> roles = new ArrayList<>();
-		roles.add("USER");
-		return User.withUsername(username).password(password)
-				.authorities(roles.toArray(new String[roles.size()])).build();
+		List<String> authorities = new ArrayList<>();
+		authorities.add("ROLE_" + role.name());
+		return User
+				.withUsername(username)
+				.password(password)
+				.authorities(authorities.toArray(new String[authorities.size()]))
+				.build();
 	}
 
 }
