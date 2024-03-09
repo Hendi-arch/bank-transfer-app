@@ -310,7 +310,7 @@
                         "type": "text"
                     }
                 ],
-                "url": "{{baseUrl}}/usertokens/{{authToken}}"
+                "url": "{{baseUrl}}/usertokens/{{token}}"
             },
             "response": []
         },
@@ -325,7 +325,7 @@
                         "type": "text"
                     }
                 ],
-                "url": "{{baseUrl}}/usertokens/{{authToken}}"
+                "url": "{{baseUrl}}/usertokens/{{token}}"
             },
             "response": []
         },
@@ -338,6 +338,36 @@
                     "mode": "raw",
                     "raw": "{\n    \"user\": {\n        \"username\": \"string\",\n        \"password\": \"string\",\n        \"balance\": 0\n    },\n    \"token\": \"string\",\n    \"expiryDateTime\": \"2022-03-01T00:00:00Z\"\n}"
                 }
+            },
+            "response": []
+        },
+        {
+            "name": "Get All User Roles",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": "{{baseUrl}}/userroles/all"
+            },
+            "response": []
+        },
+        {
+            "name": "Get User Role by ID",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": "{{baseUrl}}/userroles/{{id}}"
             },
             "response": []
         }

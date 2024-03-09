@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.hendi.banktransfersystem.infrastructure.config.db.schema.UserRoleSchema.RoleEnum;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.CorsSecurityFilter;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.RevokedJwtTokenFilter;
 import com.hendi.banktransfersystem.infrastructure.config.web.security.filter.SecurityMethodFilter;
@@ -31,11 +32,10 @@ public class AppSecurityConfigurer {
 	private final MyAuthenticationHandler myAuthenticationHandler;
 	private final MyAccessDeniedHandler myAccessDeniedHandler;
 
-	private static final String[] UNSECURED_ENDPOINTS = {
-			"/users/login",
-			"/users/user",
-			"/actuator/**"
-	};
+	private static final String[] PUBLIC_ENDPOINTS = { "/users/login", "/users/user" };
+	private static final String[] SUPER_ADMIN_ENDPOINTS = { "/actuator/**" };
+	private static final String[] ADMIN_ENDPOINTS = { "/usertokens/**", "/userroles/**" };
+	private static final String[] USER_ENDPOINTS = { "/users/**", "/transactions/**" };
 
 	public AppSecurityConfigurer(MyUserDetailService myUserDetailService,
 			SecurityMethodFilter securityMethodFilter,
@@ -67,17 +67,21 @@ public class AppSecurityConfigurer {
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
 						customizer -> customizer
-								.requestMatchers(UNSECURED_ENDPOINTS).permitAll()
-								.anyRequest().authenticated());
+								.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+								.requestMatchers(SUPER_ADMIN_ENDPOINTS).hasRole(RoleEnum.SUPER_ADMIN.name())
+								.requestMatchers(ADMIN_ENDPOINTS).hasAnyRole(
+										RoleEnum.ADMIN.name(),
+										RoleEnum.SUPER_ADMIN.name())
+								.requestMatchers(USER_ENDPOINTS).hasAnyRole(
+										RoleEnum.USER.name(),
+										RoleEnum.ADMIN.name(),
+										RoleEnum.SUPER_ADMIN.name()))
+				.cors(withDefaults());
 
-		// Enable CORS
-		http.cors(withDefaults());
-
-		// Set user details service and add filters
-		http.userDetailsService(myUserDetailService);
-		http.addFilterBefore(corsSecurityFilter, ChannelProcessingFilter.class);
-		http.addFilterBefore(securityMethodFilter, UsernamePasswordAuthenticationFilter.class);
-		http.addFilterBefore(revokedJwtTokenFilter, SecurityMethodFilter.class);
+		http.userDetailsService(myUserDetailService)
+				.addFilterBefore(corsSecurityFilter, ChannelProcessingFilter.class)
+				.addFilterBefore(securityMethodFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(revokedJwtTokenFilter, SecurityMethodFilter.class);
 
 		return http.build();
 	}

@@ -13,6 +13,7 @@ import java.util.List;
 import com.hendi.banktransfersystem.entity.user.exception.PasswordNotMatchException;
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
 import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
+import com.hendi.banktransfersystem.entity.userrole.exception.UserRoleNotFoundException;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 import com.hendi.banktransfersystem.infrastructure.user.dto.UserCreateData;
 import com.hendi.banktransfersystem.infrastructure.user.dto.UserLoginData;
@@ -60,7 +61,8 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<WebHttpResponse<UserPublicData>> createUser(@Valid @RequestBody UserCreateData request) {
+    public ResponseEntity<WebHttpResponse<UserPublicData>> createUser(@Valid @RequestBody UserCreateData request)
+            throws UserRoleNotFoundException {
         UserAccountModel userAccountData = createUserUseCase.execute(request);
         return new ResponseEntity<>(WebHttpResponse.created(new UserPublicData(userAccountData)), HttpStatus.CREATED);
     }
@@ -74,7 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WebHttpResponse<UserPublicData>> getUserById(@PathVariable Long id) throws UserNotFoundException {
+    public ResponseEntity<WebHttpResponse<UserPublicData>> getUserById(@PathVariable Long id)
+            throws UserNotFoundException {
         UserAccountModel userAccountData = getUserUseCase.findById(id);
         return new ResponseEntity<>(WebHttpResponse.ok(new UserPublicData(userAccountData)), HttpStatus.OK);
     }
@@ -82,7 +85,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<WebHttpResponse<UserPublicData>> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody UserUpdateData request) {
+            @Valid @RequestBody UserUpdateData request) throws UserNotFoundException, UserRoleNotFoundException {
         UserAccountModel userAccountData = updateUserUseCase.execute(id, request);
         return new ResponseEntity<>(WebHttpResponse.ok(new UserPublicData(userAccountData)), HttpStatus.OK);
     }

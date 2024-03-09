@@ -15,7 +15,7 @@ public class AppSecurityAuditorConfig implements AuditorAware<String> {
         if (authentication != null && authentication.isAuthenticated()) {
             return Optional.of(authentication.getName());
         } else {
-            return Optional.empty();
+            return Optional.of("SYSTEM");
         }
     }
 }
