@@ -8,9 +8,11 @@ import com.hendi.banktransfersystem.infrastructure.user.validation.Username;
 import com.hendi.banktransfersystem.usecase.user.dto.IUserCreateData;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UserCreateData(
         @NotBlank @Username String username,
         @NotBlank @Password String password,
-        @Amount BigDecimal balance) implements IUserCreateData {
+        @Amount BigDecimal balance,
+        @NotNull Long roleId) implements IUserCreateData {
 }

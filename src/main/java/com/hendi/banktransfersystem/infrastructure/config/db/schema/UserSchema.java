@@ -14,14 +14,14 @@ import com.hendi.banktransfersystem.entity.user.model.UserAccountModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,15 +40,17 @@ public class UserSchema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 50)
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_role_id"), nullable = false)
+    private UserRoleSchema role;
+
+    @Column(nullable = false, length = 50)
     private String username;
 
-    @NotBlank
-    @Size(max = 100)
+    @Column(nullable = false, length = 300)
     private String password;
 
-    @NotNull
+    @Column(nullable = false)
     private BigDecimal balance;
 
     @CreatedBy
@@ -69,6 +71,7 @@ public class UserSchema {
 
     public UserSchema(UserAccountModel userAccountModel) {
         this.id = userAccountModel.getId();
+        this.role = new UserRoleSchema(userAccountModel.getRole());
         this.username = userAccountModel.getUsername();
         this.password = userAccountModel.getPassword();
         this.balance = userAccountModel.getBalance();
@@ -79,7 +82,11 @@ public class UserSchema {
     }
 
     public UserAccountModel toUserAccountModel() {
-        UserAccountModel userAccountModel = new UserAccountModel(this.username, this.password, this.balance);
+        UserAccountModel userAccountModel = new UserAccountModel(
+                this.username,
+                this.password,
+                this.balance,
+                this.role.toUserRoleModel());
         userAccountModel.setId(this.id);
         userAccountModel.setCreatedAt(this.createdAt);
         userAccountModel.setUpdatedAt(this.updatedAt);

@@ -10,4 +10,6 @@ public interface IUserCreateData {
 
     BigDecimal balance();
 
+    Long roleId();
+
 }

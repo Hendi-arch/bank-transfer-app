@@ -40,10 +40,10 @@ public class UserTokenSchema {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_id"))
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_user_id"), nullable = false)
     private UserSchema user;
 
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private String token;
 
     private LocalDateTime expiryDateTime;

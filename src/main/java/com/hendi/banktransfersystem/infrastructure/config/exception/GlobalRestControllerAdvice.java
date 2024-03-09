@@ -7,24 +7,24 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.hendi.banktransfersystem.entity.transaction.exception.InsufficientBalanceException;
 import com.hendi.banktransfersystem.entity.transaction.exception.TransactionNotFoundException;
 import com.hendi.banktransfersystem.entity.user.exception.PasswordNotMatchException;
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
+import com.hendi.banktransfersystem.entity.userrole.exception.UserRoleNotFoundException;
 import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenNotFoundException;
 import com.hendi.banktransfersystem.entity.usertoken.exception.UserTokenRevokedException;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpErrorResponse;
 import com.hendi.banktransfersystem.infrastructure.config.web.response.WebHttpResponse;
 
 import jakarta.persistence.PersistenceException;
-import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
-public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
+public class GlobalRestControllerAdvice {
 
 	/**
 	 * Handles validation errors and converts them into a standardized format.
@@ -32,14 +32,14 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 	 * @param ex The ConstraintViolationException instance
 	 * @return ResponseEntity containing the error response
 	 */
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleValidationError(
-			ConstraintViolationException ex) {
+	@ExceptionHandler(BindException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleValidationError(BindException ex) {
 
 		// Convert ConstraintViolation objects into WebHttpErrorResponse objects
-		List<WebHttpErrorResponse> messages = ex.getConstraintViolations().stream()
-				.map(violation -> new WebHttpErrorResponse(violation.getPropertyPath().toString(),
-						violation.getMessage()))
+		List<WebHttpErrorResponse> messages = ex.getFieldErrors().stream()
+				.map(violation -> new WebHttpErrorResponse(
+						violation.getField(),
+						violation.getDefaultMessage()))
 				.collect(Collectors.toList());
 
 		return ResponseEntity.badRequest().body(WebHttpResponse.badRequest(messages));
@@ -176,6 +176,19 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 		List<WebHttpErrorResponse> message = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 				.body(WebHttpResponse.unauthorized(message));
+	}
+
+	/**
+	 * Handles when a user role is not found.
+	 *
+	 * @param ex The UserRoleNotFoundException instance
+	 * @return ResponseEntity containing the error response
+	 */
+	@ExceptionHandler(UserRoleNotFoundException.class)
+	public ResponseEntity<WebHttpResponse<List<WebHttpErrorResponse>>> handleUserRoleNotFoundException(
+			UserRoleNotFoundException ex) {
+		List<WebHttpErrorResponse> messages = List.of(new WebHttpErrorResponse(null, ex.getMessage()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(WebHttpResponse.notFound(messages));
 	}
 
 }
