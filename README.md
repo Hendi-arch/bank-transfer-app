@@ -1,12 +1,14 @@
 # Bank Transfer Application Sample
 
-System should allow users to initiate fund transfers between accounts and internal banks.
+The Bank Transfer Application Sample enables users to initiate fund transfers between accounts and internal banks seamlessly.
 
 ## Supported Features
 
-- [x] User Management (login, signup, update and search)
-- [x] User Token Management (create, search and delete)
-- [x] Transaction (create and search)
+- **Authentication & Authorization**: Utilizes JWT (JSON Web Tokens) for secure authentication and RBAC (Role-Based Access Control) for controlling user access to resources.
+- **User Management**: Enables users to perform actions such as logging in, signing up, updating their information, and searching for other users.
+- **User Token Management**: Facilitates the creation, search, and deletion of user tokens for enhanced security and session management.
+- **Transaction Management**: Allows users to initiate fund transfers between accounts and internal banks, with support for creating and searching transactions.
+- **User Role Management**: Provides functionality for creating, searching, and deleting user roles, empowering administrators to manage user permissions effectively.
 
 ## Installation
 
@@ -52,8 +54,10 @@ The application exposes the following API endpoints:
 - **DELETE** `/usertokens/{authToken}`: Endpoint for deleting user tokens.
 - **POST** `/transactions/{senderId}/transfer`: Endpoint for creating transactions.
 - **GET** `/transactions/{id}`: Endpoint for searching transactions.
+- **GET** `/userroles/{id}`: Endpoint for searching user role.
+- **GET** `/userroles/all`: Endpoint for getting all user roles.
 
-For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.0.0)
+For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.1.0)
 
 ## Configuration
 

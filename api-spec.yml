@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Bank Transfer Application API
-  version: 1.0.0
+  version: 1.1.0
   description: API documentation for Bank Transfer Application
   contact:
     name: Hendi
@@ -297,6 +297,57 @@ paths:
         "400":
           description: Bad request
 
+  /userroles/all:
+    get:
+      summary: Get all user roles
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserRolePublicData"
+              example:
+                - id: 1
+                  role: "ADMIN"
+                  createdAt: "2022-02-28T08:00:00Z"
+                  updatedAt: "2022-02-28T08:00:00Z"
+                - id: 2
+                  role: "USER"
+                  createdAt: "2022-02-28T08:05:00Z"
+                  updatedAt: "2022-02-28T08:05:00Z"
+      security:
+        - BearerAuth: []
+
+  /userroles/{id}:
+    get:
+      summary: Get user role by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User Role ID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRolePublicData"
+              example:
+                id: 1
+                role: "ADMIN"
+                createdAt: "2022-02-28T08:00:00Z"
+                updatedAt: "2022-02-28T08:00:00Z"
+        "404":
+          description: User Role not found
+      security:
+        - BearerAuth: []
+
 components:
   securitySchemes:
     BearerAuth:
@@ -379,6 +430,24 @@ components:
           type: string
           format: date-time
           description: Date and time of last user update
+    UserRolePublicData:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: User Role ID
+        role:
+          type: string
+          description: User's role
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time of user role creation
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time of last user role update
     TransactionPublicData:
       type: object
       properties:
