@@ -34,8 +34,8 @@ public class AppSecurityConfigurer {
 
 	private static final String[] PUBLIC_ENDPOINTS = { "/users/login", "/users/user" };
 	private static final String[] SUPER_ADMIN_ENDPOINTS = { "/actuator/**" };
-	private static final String[] ADMIN_ENDPOINTS = { "/usertokens/**", "/userroles/**" };
-	private static final String[] USER_ENDPOINTS = { "/users/**", "/transactions/**" };
+	private static final String[] ADMIN_ENDPOINTS = { "/usertokens/**", "/userroles/**", "/transactions/{id}" };
+	private static final String[] USER_ENDPOINTS = { "/users/**", "/transactions/{senderId}/transfer" };
 
 	public AppSecurityConfigurer(MyUserDetailService myUserDetailService,
 			SecurityMethodFilter securityMethodFilter,

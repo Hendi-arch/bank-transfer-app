@@ -28,7 +28,6 @@ import com.hendi.banktransfersystem.usecase.user.UpdateUserUseCase;
 import com.hendi.banktransfersystem.usecase.userrole.GetUserRoleUseCase;
 import com.hendi.banktransfersystem.usecase.userrole.SearchUserRoleUseCase;
 import com.hendi.banktransfersystem.usecase.userrole.SeederUserRolesUseCase;
-import com.hendi.banktransfersystem.usecase.usertoken.CreateUserTokenUseCase;
 import com.hendi.banktransfersystem.usecase.usertoken.DeleteUserTokenUseCase;
 import com.hendi.banktransfersystem.usecase.usertoken.GetUserTokenUseCase;
 
@@ -89,12 +88,6 @@ public class MvcConfiguration {
     public GetUserTokenUseCase getUserTokenUseCase(UserTokenRepository userTokenRepository) {
         UserTokenGateway userTokenGateway = new UserTokenDatabaseGateway(userTokenRepository);
         return new GetUserTokenUseCase(userTokenGateway);
-    }
-
-    @Bean
-    public CreateUserTokenUseCase createUserTokenUseCase(UserTokenRepository userTokenRepository) {
-        UserTokenGateway userTokenGateway = new UserTokenDatabaseGateway(userTokenRepository);
-        return new CreateUserTokenUseCase(userTokenGateway);
     }
 
     @Bean

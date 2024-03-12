@@ -31,4 +31,24 @@ public class TestUtils {
         return headers;
     }
 
+    public static String getBaseUrl(int serverPort, String requestMapping, String url) {
+        return "http://localhost:" + serverPort + requestMapping + url;
+    }
+
+    public static String getUsersBaseUrl(int serverPort, String url) {
+        return getBaseUrl(serverPort, "/users", url);
+    }
+
+    public static String getUserRolesBaseUrl(int serverPort, String url) {
+        return getBaseUrl(serverPort, "/userroles", url);
+    }
+
+    public static String getUserTokensBaseUrl(int serverPort, String url) {
+        return getBaseUrl(serverPort, "/usertokens", url);
+    }
+
+    public static String getTransactionsBaseUrl(int serverPort, String url) {
+        return getBaseUrl(serverPort, "/transactions", url);
+    }
+
 }
