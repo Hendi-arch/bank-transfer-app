@@ -275,28 +275,6 @@ paths:
       security:
         - BearerAuth: []
 
-  /usertokens/usertoken:
-    post:
-      summary: Create User Token
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserTokenCreateData"
-      responses:
-        "201":
-          description: User Token created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserTokenPublicData"
-              example:
-                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-                expiryDateTime: "2022-03-01T00:00:00Z"
-        "400":
-          description: Bad request
-
   /userroles/all:
     get:
       summary: Get all user roles
@@ -480,18 +458,6 @@ components:
     UserTokenPublicData:
       type: object
       properties:
-        token:
-          type: string
-          description: Authentication token of the user
-        expiryDateTime:
-          type: string
-          format: date-time
-          description: Expiry date and time of the token
-    UserTokenCreateData:
-      type: object
-      properties:
-        user:
-          $ref: "#/components/schemas/UserAccountModel"
         token:
           type: string
           description: Authentication token of the user
