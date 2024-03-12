@@ -330,18 +330,6 @@
             "response": []
         },
         {
-            "name": "Create User Token",
-            "request": {
-                "method": "POST",
-                "url": "{{baseUrl}}/usertokens/usertoken",
-                "body": {
-                    "mode": "raw",
-                    "raw": "{\n    \"user\": {\n        \"username\": \"string\",\n        \"password\": \"string\",\n        \"balance\": 0\n    },\n    \"token\": \"string\",\n    \"expiryDateTime\": \"2022-03-01T00:00:00Z\"\n}"
-                }
-            },
-            "response": []
-        },
-        {
             "name": "Get All User Roles",
             "request": {
                 "method": "GET",

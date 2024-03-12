@@ -50,7 +50,7 @@ public class UserSchema {
     @Column(nullable = false, length = 300)
     private String password;
 
-    @Column(nullable = false)
+    @Column(precision = 15, scale = 2, nullable = false)
     private BigDecimal balance;
 
     @CreatedBy

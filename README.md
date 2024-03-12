@@ -49,7 +49,6 @@ The application exposes the following API endpoints:
 - **PUT** `/users/{id}`: Endpoint for updating user information.
 - **GET** `/users/{id}`: Endpoint for searching users.
 - **GET** `/users/all`: Endpoint for getting all users.
-- **POST** `/usertokens/usertoken`: Endpoint for creating user tokens.
 - **GET** `/usertokens/{authToken}`: Endpoint for searching user tokens.
 - **DELETE** `/usertokens/{authToken}`: Endpoint for deleting user tokens.
 - **POST** `/transactions/{senderId}/transfer`: Endpoint for creating transactions.
@@ -57,7 +56,7 @@ The application exposes the following API endpoints:
 - **GET** `/userroles/{id}`: Endpoint for searching user role.
 - **GET** `/userroles/all`: Endpoint for getting all user roles.
 
-For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.1.0)
+For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.2.0)
 
 ## Configuration
 
@@ -96,6 +95,7 @@ The Use Case layer contains the system use cases, which can be made parallel to 
 - [Spring Validation](https://spring.io/guides/gs/validating-form-input)
 - [Spring Web](https://spring.io/guides/gs/spring-boot)
 - [Spring Test](https://docs.spring.io/spring-boot/docs/1.5.2.RELEASE/reference/html/boot-features-testing.html)
+- [Test Containers](https://testcontainers.com/)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [Lombok](https://projectlombok.org/)
 
