@@ -56,7 +56,7 @@ The application exposes the following API endpoints:
 - **GET** `/userroles/{id}`: Endpoint for searching user role.
 - **GET** `/userroles/all`: Endpoint for getting all user roles.
 
-For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.2.0)
+For detailed information on each endpoint, refer to the [API documentation.](https://app.swaggerhub.com/apis-docs/HENDINOFIANSYAH11/bank-transfer-application-api/1.3.0)
 
 ## Configuration
 

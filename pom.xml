@@ -12,7 +12,7 @@
 
 	<groupId>com.hendi</groupId>
 	<artifactId>banktransfersystem</artifactId>
-	<version>0.0.6-SNAPSHOT</version>
+	<version>0.0.7-SNAPSHOT</version>
 	<name>banktransfersystem</name>
 	<description>Demo project for Spring Boot</description>
 
