@@ -29,18 +29,25 @@ public class TransactionTransferUseCase {
         UserAccountModel sender = userGateway.findById(senderId).orElseThrow(UserNotFoundException::new);
 
         BigDecimal amount = data.amount();
-        if (!userGateway.hasSufficientBalanceForTransaction(sender.getId(), amount)) {
-            throw new InsufficientBalanceException();
+        UserAccountModel receiver;
+        if (senderId.equals(data.receiver())) {
+            BigDecimal newSenderBalance = sender.getBalance().add(amount);
+            sender.setBalance(newSenderBalance);
+            receiver = userGateway.update(sender);
+        } else {
+            if (!userGateway.hasSufficientBalanceForTransaction(sender.getId(), amount)) {
+                throw new InsufficientBalanceException();
+            }
+
+            BigDecimal newSenderBalance = sender.getBalance().subtract(amount);
+            sender.setBalance(newSenderBalance);
+            userGateway.update(sender);
+
+            receiver = userGateway.findById(data.receiver()).orElseThrow(UserNotFoundException::new);
+            BigDecimal newReceiverBalance = receiver.getBalance().add(amount);
+            receiver.setBalance(newReceiverBalance);
+            userGateway.update(receiver);
         }
-
-        BigDecimal newSenderBalance = sender.getBalance().subtract(amount);
-        sender.setBalance(newSenderBalance);
-        userGateway.update(sender);
-
-        UserAccountModel receiver = userGateway.findById(data.receiver()).orElseThrow(UserNotFoundException::new);
-        BigDecimal newReceiverBalance = receiver.getBalance().add(amount);
-        receiver.setBalance(newReceiverBalance);
-        userGateway.update(receiver);
 
         LocalDateTime timestamp = LocalDateTime.now();
         TransactionModel transaction = new TransactionModel(sender, receiver, amount, timestamp);

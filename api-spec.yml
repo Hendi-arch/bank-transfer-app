@@ -367,7 +367,6 @@ components:
       required:
         - username
         - password
-        - balance
       properties:
         username:
           type: string
@@ -375,10 +374,6 @@ components:
         password:
           type: string
           description: User's password
-        balance:
-          type: number
-          format: double
-          description: User's balance
     UserPublicData:
       type: object
       properties:

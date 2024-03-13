@@ -1,7 +1,5 @@
 package com.hendi.banktransfersystem.usecase.user;
 
-import java.math.BigDecimal;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.hendi.banktransfersystem.entity.user.exception.UserNotFoundException;
@@ -30,11 +28,9 @@ public class UpdateUserUseCase {
     public UserAccountModel execute(Long id, IUserUpdateData data)
             throws UserNotFoundException, UserRoleNotFoundException {
         String password = data.password();
-        BigDecimal balance = data.balance();
         Long roleId = data.roleId();
 
         UserAccountModel userAccountData = userGateway.findById(id).orElseThrow(UserNotFoundException::new);
-        userAccountData.setBalance(balance);
 
         String encodedPassword = passwordEncoder.encode(password);
         userAccountData.setPassword(encodedPassword);

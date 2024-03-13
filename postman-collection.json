@@ -197,7 +197,7 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"balance\": 0\n}"
+                    "raw": "{\n    \"username\": \"string\",\n    \"password\": \"string\"\n}"
                 },
                 "url": {
                     "raw": "{{baseUrl}}/users/{id}",

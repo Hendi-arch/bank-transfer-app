@@ -193,7 +193,7 @@ class UserControllerAcceptanceTest {
         @Test
         @Order(5)
         void testUpdateUser() throws JsonProcessingException {
-                UserUpdateData updateData = new UserUpdateData(PASSWORD, BigDecimal.valueOf(10_000_000L), 1L);
+                UserUpdateData updateData = new UserUpdateData(PASSWORD, 1L);
                 HttpHeaders httpHeaders = TestUtils.getAuthHeaders(superAdminJwtToken);
                 ResponseEntity<WebHttpResponse<UserPublicData>> responseEntity = restTemplate.exchange(
                                 TestUtils.getUsersBaseUrl(serverPort, "/{id}"), HttpMethod.PUT,
@@ -212,7 +212,7 @@ class UserControllerAcceptanceTest {
                 UserPublicData publicData = responseBody.getData();
                 assertEquals(superAdminUserId, publicData.id());
                 assertEquals(SUPERADMIN, publicData.username());
-                assertEquals(BigDecimal.valueOf(10_000_000L), publicData.balance());
+                assertEquals(BigDecimal.valueOf(0.0), publicData.balance());
                 assertNotNull(publicData.createdAt());
                 assertNotNull(publicData.updatedAt());
 
@@ -402,7 +402,7 @@ class UserControllerAcceptanceTest {
                 assertNotNull(publicData.receiver());
                 assertEquals(superAdminUserId, publicData.receiver().id());
                 assertEquals(SUPERADMIN, publicData.receiver().username());
-                assertEquals(BigDecimal.valueOf(10_300_000.0), publicData.receiver().balance());
+                assertEquals(BigDecimal.valueOf(300000.0), publicData.receiver().balance());
         }
 
         @Test
@@ -428,7 +428,7 @@ class UserControllerAcceptanceTest {
                 superAdminUserId = publicData.id();
 
                 assertEquals(SUPERADMIN, publicData.username());
-                assertEquals(BigDecimal.valueOf(10_300_000.0), publicData.balance());
+                assertEquals(BigDecimal.valueOf(300000.0), publicData.balance());
                 assertNotNull(publicData.createdAt());
                 assertNotNull(publicData.updatedAt());
 
@@ -464,6 +464,43 @@ class UserControllerAcceptanceTest {
                 TransactionPublicData publicData = responseBody.getData();
                 assertEquals(transactionId, publicData.id());
                 assertNotNull(publicData.timestamp());
+        }
+
+        @Test
+        @Order(15)
+        void testSelfTransfer() throws JsonProcessingException {
+                BigDecimal transferAmount = BigDecimal.valueOf(500000L).setScale(2);
+                TransactionTransferData transferData = new TransactionTransferData(superAdminUserId, transferAmount);
+                HttpHeaders httpHeaders = TestUtils.getAuthHeaders(userJwtToken);
+                ResponseEntity<WebHttpResponse<TransactionPublicData>> responseEntity = restTemplate.exchange(
+                                TestUtils.getTransactionsBaseUrl(serverPort, "/{senderId}/transfer"), HttpMethod.POST,
+                                new HttpEntity<>(transferData, httpHeaders),
+                                TestUtils.webHttpResponseType(),
+                                superAdminUserId);
+
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                assertNotNull(responseEntity.getBody());
+
+                WebHttpResponse<TransactionPublicData> responseBody = TestUtils.deserializeResponseBody(
+                                responseEntity.getBody(),
+                                new TypeReference<WebHttpResponse<TransactionPublicData>>() {
+                                });
+                assertNotNull(responseBody.getData());
+
+                TransactionPublicData publicData = responseBody.getData();
+                assertNotNull(publicData.timestamp());
+
+                assertEquals(2L, publicData.id());
+
+                assertNotNull(publicData.sender());
+                assertEquals(superAdminUserId, publicData.sender().id());
+                assertEquals(SUPERADMIN, publicData.sender().username());
+                assertEquals(BigDecimal.valueOf(800000.0), publicData.sender().balance());
+
+                assertNotNull(publicData.receiver());
+                assertEquals(superAdminUserId, publicData.receiver().id());
+                assertEquals(SUPERADMIN, publicData.receiver().username());
+                assertEquals(BigDecimal.valueOf(800000.0), publicData.receiver().balance());
         }
 
 }
